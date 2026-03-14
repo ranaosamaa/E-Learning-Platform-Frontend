@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Progress - Edutopia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .roster-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+
+        .roster-table th, .roster-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .roster-table th {
+            background-color: var(--surface-hover);
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .roster-table tbody tr:hover {
+            background-color: rgba(241, 245, 249, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="mainNav">
+             <div class="sidebar-header">
+                <i class="ph-fill ph-graduation-cap"></i>
+                <h2>Edutopia <span style="font-size: 0.75rem; color: var(--primary); background: rgba(79, 70, 229, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; vertical-align: middle;">Instructor</span></h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="professor-dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i>
+                    Dashboard
+                </a>
+                <a href="course-management.html" class="nav-item">
+                    <i class="ph ph-books"></i>
+                    Manage Courses
+                </a>
+                <a href="grading.html" class="nav-item">
+                    <i class="ph ph-check-square"></i>
+                    Grading & Review
+                </a>
+                <a href="student-progress.html" class="nav-item active">
+                    <i class="ph ph-users"></i>
+                    Student Progress
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                 <div class="user-profile">
+                    <div class="avatar" style="background-color: var(--accent);">AT</div>
+                    <div>
+                        <p style="font-weight: 500; font-size: 0.875rem;">Alan Turing</p>
+                        <p class="text-muted text-sm">Computer Science Dept.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-wrapper">
+             <header class="top-header">
+                <div class="flex items-center gap-4">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="ph ph-list"></i>
+                    </button>
+                    
+                    <select class="form-input" style="width: auto; font-weight: 500;">
+                        <option>CS301 - Data Structures</option>
+                        <option>CS401 - Advanced Cryptography</option>
+                    </select>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-secondary"><i class="ph ph-export mr-2"></i> Export to CSV</button>
+                </div>
+            </header>
+
+            <div class="main-content animate-fade-in">
+                <div class="page-title">
+                    <h1>Course Roster & Progress</h1>
+                    <p>Overview of all students enrolled in CS301.</p>
+                </div>
+
+                <div class="metrics-grid mb-4">
+                    <div class="card metric-card">
+                        <div class="metric-icon blue">
+                            <i class="ph-fill ph-users"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>120</h3>
+                            <p>Enrolled Students</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon green">
+                            <i class="ph-fill ph-chart-line-up"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>84%</h3>
+                            <p>Class Average</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon amber">
+                            <i class="ph-fill ph-warning-circle"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>3</h3>
+                            <p>Students At Risk (< 60%)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="roster-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Student ID</th>
+                                <th>Last Active</th>
+                                <th>Assignments Completed</th>
+                                <th>Midterm Grade</th>
+                                <th>Current Average</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 500;">John Smith</td>
+                                <td class="text-muted">1048291</td>
+                                <td>Today</td>
+                                <td>
+                                    <div class="progress-bar-container" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 100%;"></div>
+                                    </div>
+                                    <span class="text-sm text-muted">4/4</span>
+                                </td>
+                                <td>92%</td>
+                                <td><span style="color: var(--success); font-weight: 600;">94%</span></td>
+                                <td><button class="btn btn-secondary text-sm">View details</button></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 500;">Alice Johnson</td>
+                                <td class="text-muted">1048292</td>
+                                <td>Yesterday</td>
+                                <td>
+                                    <div class="progress-bar-container" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 75%;"></div>
+                                    </div>
+                                    <span class="text-sm text-muted">3/4</span>
+                                </td>
+                                <td>85%</td>
+                                <td><span style="color: var(--primary); font-weight: 600;">88%</span></td>
+                                <td><button class="btn btn-secondary text-sm">View details</button></td>
+                            </tr>
+                             <tr>
+                                <td style="font-weight: 500;">Bob Williams</td>
+                                <td class="text-muted">1048293</td>
+                                <td>2 days ago</td>
+                                <td>
+                                    <div class="progress-bar-container" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 25%; background-color: var(--danger);"></div>
+                                    </div>
+                                    <span class="text-sm text-muted">1/4</span>
+                                </td>
+                                <td>45%</td>
+                                <td><span style="color: var(--danger); font-weight: 600;">52%</span></td>
+                                <td><button class="btn btn-secondary text-sm">View details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

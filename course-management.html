@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Management - Edutopia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .module-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+        }
+
+        .module-header {
+            padding: 1.5rem;
+            background: var(--surface-hover);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .module-title-input {
+            font-size: 1.25rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            background: transparent;
+            padding: 0.25rem 0.5rem;
+            color: var(--text-main);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .module-title-input:focus {
+            background: var(--surface);
+            border: 1px solid var(--primary);
+            outline: none;
+            border-radius: var(--radius-sm);
+        }
+
+        .module-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .material-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            cursor: move;
+        }
+
+        .material-item:hover {
+            border-color: var(--primary);
+        }
+
+        .material-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .material-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .course-select {
+            padding: 0.5rem 1rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-main);
+            min-width: 250px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--surface-hover);
+            cursor: pointer;
+            margin: 1.5rem 0;
+            transition: border-color var(--transition-fast);
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="mainNav">
+            <div class="sidebar-header">
+                <i class="ph-fill ph-graduation-cap"></i>
+                <h2>Edutopia <span style="font-size: 0.75rem; color: var(--primary); background: rgba(79, 70, 229, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; vertical-align: middle;">Instructor</span></h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="professor-dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i>
+                    Dashboard
+                </a>
+                <a href="course-management.html" class="nav-item active">
+                    <i class="ph ph-books"></i>
+                    Manage Courses
+                </a>
+                <a href="grading.html" class="nav-item">
+                    <i class="ph ph-check-square"></i>
+                    Grading & Review
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar" style="background-color: var(--accent);">AT</div>
+                    <div>
+                        <p style="font-weight: 500; font-size: 0.875rem;">Alan Turing</p>
+                        <p class="text-muted text-sm">Computer Science Dept.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-wrapper">
+            <header class="top-header">
+                <div class="flex items-center gap-4">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="ph ph-list"></i>
+                    </button>
+                    
+                    <select class="course-select">
+                        <option>CS301 - Data Structures</option>
+                        <option>CS401 - Advanced Cryptography</option>
+                    </select>
+
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="showToast('Course Draft Saved!')">Save Changes</button>
+                </div>
+            </header>
+
+            <div class="main-content animate-fade-in">
+                
+                <div class="page-title flex justify-between items-center mb-4">
+                    <div>
+                        <h1>Course Material Management</h1>
+                        <p>Upload files, create assignments, and organize modules.</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="addModule()">
+                        <i class="ph ph-plus mr-2"></i> Add New Module
+                    </button>
+                </div>
+
+                <div class="module-list">
+                    
+                    <!-- Module 1 -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div style="flex-grow: 1;">
+                                <input type="text" class="module-title-input" value="Module 1: Introduction & Complexity">
+                            </div>
+                            <div class="action-btns">
+                                <button class="icon-btn tooltip" title="Edit"><i class="ph ph-pencil-simple"></i></button>
+                                <button class="icon-btn tooltip" title="Delete" style="color: var(--danger);"><i class="ph ph-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="module-content">
+                            <!-- Items -->
+                            <div class="material-item">
+                                <div class="material-info">
+                                    <i class="ph ph-dots-six-vertical text-muted"></i>
+                                    <i class="ph-fill ph-video-camera material-icon"></i>
+                                    <div>
+                                        <p style="font-weight: 500; margin: 0;">Lecture 1 Recording: Big-O Notation</p>
+                                        <p class="text-sm text-muted" style="margin: 0;">Visible to students</p>
+                                    </div>
+                                </div>
+                                <div class="action-btns">
+                                    <button class="btn btn-secondary text-sm">Edit</button>
+                                </div>
+                            </div>
+
+                            <div class="material-item">
+                                <div class="material-info">
+                                    <i class="ph ph-dots-six-vertical text-muted"></i>
+                                    <i class="ph-fill ph-file-pdf material-icon text-danger"></i>
+                                    <div>
+                                        <p style="font-weight: 500; margin: 0;">Lecture 1 Slides</p>
+                                        <p class="text-sm text-muted" style="margin: 0;">Visible to students</p>
+                                    </div>
+                                </div>
+                                <div class="action-btns">
+                                    <button class="btn btn-secondary text-sm">Edit</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn w-full mt-2" style="background: var(--surface-hover); border: 2px dashed var(--border); color: var(--text-muted);" onclick="openUploadModal()">
+                                <i class="ph ph-plus mb-1"></i> Add Material or Assignment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div style="flex-grow: 1;">
+                                <input type="text" class="module-title-input" value="Module 2: Linear Data Structures">
+                            </div>
+                            <div class="action-btns">
+                                <button class="icon-btn tooltip" title="Edit"><i class="ph ph-pencil-simple"></i></button>
+                                <button class="icon-btn tooltip" title="Delete" style="color: var(--danger);"><i class="ph ph-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="module-content">
+                            <!-- Items -->
+                            <div class="material-item" style="border-left: 4px solid var(--accent);">
+                                <div class="material-info">
+                                    <i class="ph ph-dots-six-vertical text-muted"></i>
+                                    <i class="ph-fill ph-clipboard-text material-icon" style="color: var(--accent);"></i>
+                                    <div>
+                                        <p style="font-weight: 500; margin: 0;">Assignment 1: Linked List Implementation</p>
+                                        <p class="text-sm text-muted" style="margin: 0;">Due: Oct 15 • 100 points</p>
+                                    </div>
+                                </div>
+                                <div class="action-btns">
+                                    <button class="btn btn-secondary text-sm">Edit Options</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn w-full mt-2" style="background: var(--surface-hover); border: 2px dashed var(--border); color: var(--text-muted);" onclick="openUploadModal()">
+                                <i class="ph ph-plus mb-1"></i> Add Material or Assignment
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Upload Modal Demo -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal">
+            <div class="flex justify-between items-center mb-4">
+                <h2>Add Material</h2>
+                <button class="icon-btn" onclick="closeUploadModal()"><i class="ph ph-x"></i></button>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Material Type</label>
+                <select class="form-input">
+                    <option>File Upload (PDF, Word, etc.)</option>
+                    <option>Assignment Submission Box</option>
+                    <option>Video Link</option>
+                    <option>Text Page</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-input" placeholder="e.g. Week 1 Reading">
+            </div>
+
+            <div class="upload-area">
+                <i class="ph-fill ph-upload-simple" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 1.125rem;">Drag and drop files here</h3>
+                <p class="text-sm text-muted mt-2">or click to browse your computer</p>
+                <input type="file" style="display: none;">
+            </div>
+
+            <div class="flex justify-between items-center mt-6">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="showToast('Material Added!'); closeUploadModal();">Save to Module</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+        }
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+        }
+        function addModule() {
+            showToast('New module added to the bottom of the list.');
+        }
+
+        // Add upload area click functionality
+        document.querySelector('.upload-area').addEventListener('click', function() {
+            var input = this.querySelector('input[type="file"]');
+            if(input) input.click();
+        });
+    </script>
+</body>
+</html>

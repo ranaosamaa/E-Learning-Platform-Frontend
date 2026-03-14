@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grading & Review - Edutopia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .grading-layout {
+            display: flex;
+            height: calc(100vh - 64px); /* Subtract header height */
+            overflow: hidden;
+            background: var(--background);
+        }
+
+        .student-list-panel {
+            width: 350px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .submission-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+
+        .submission-item:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .submission-item.active {
+            background-color: rgba(79, 70, 229, 0.05);
+            border-left: 3px solid var(--primary);
+        }
+
+        .submission-item .student-name {
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .submission-item .meta {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .status-dot.needs-grading { background-color: var(--accent); }
+        .status-dot.graded { background-color: var(--success); }
+
+        .grading-panel {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .document-viewer {
+            flex-grow: 1;
+            background: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .document-mock {
+            background: white;
+            width: 80%;
+            height: 90%;
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-sm);
+            padding: 3rem;
+            overflow-y: auto;
+            font-family: monospace;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .grading-sidebar {
+            width: 320px;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .grading-sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface-hover);
+            text-align: center;
+        }
+
+        .grading-form {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .grade-input-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grade-input-group input {
+            width: 80px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 0.5rem;
+        }
+
+        .grade-input-group span {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .feedback-box {
+            width: 100%;
+            height: 150px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            resize: vertical;
+            font-family: inherit;
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="mainNav">
+            <div class="sidebar-header">
+                <i class="ph-fill ph-graduation-cap"></i>
+                <h2>Edutopia <span style="font-size: 0.75rem; color: var(--primary); background: rgba(79, 70, 229, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; vertical-align: middle;">Instructor</span></h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="professor-dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i>
+                    Dashboard
+                </a>
+                <a href="course-management.html" class="nav-item">
+                    <i class="ph ph-books"></i>
+                    Manage Courses
+                </a>
+                <a href="grading.html" class="nav-item active">
+                    <i class="ph ph-check-square"></i>
+                    Grading & Review
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar" style="background-color: var(--accent);">AT</div>
+                    <div>
+                        <p style="font-weight: 500; font-size: 0.875rem;">Alan Turing</p>
+                        <p class="text-muted text-sm">Computer Science Dept.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-wrapper" style="display: flex; flex-direction: column; height: 100vh;">
+            <header class="top-header" style="flex-shrink: 0;">
+                <div class="flex items-center gap-4">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="ph ph-list"></i>
+                    </button>
+                    
+                    <div class="flex items-center gap-2">
+                        <span style="font-weight: 600; font-size: 1.125rem;">Grading:</span>
+                        <select class="form-input" style="width: auto; padding: 0.25rem 0.5rem;">
+                            <option>CS301 - Midterm Exam</option>
+                            <option>CS301 - Assignment 1</option>
+                        </select>
+                    </div>
+
+                </div>
+                
+                <div class="header-actions">
+                    <span class="text-sm text-muted">38 ungraded</span>
+                </div>
+            </header>
+
+            <div class="grading-layout">
+                <!-- Left: Student List -->
+                <div class="student-list-panel">
+                    <div style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                        <input type="text" class="form-input" placeholder="Search students...">
+                    </div>
+
+                    <div class="submission-item active">
+                        <div class="student-name"><span class="status-dot needs-grading"></span>John Smith</div>
+                        <div class="meta">
+                            <span>Submitted: Oct 12, 14:30</span>
+                            <span style="color: var(--accent); font-weight: 500;">Ungraded</span>
+                        </div>
+                    </div>
+
+                    <div class="submission-item">
+                        <div class="student-name"><span class="status-dot needs-grading"></span>Alice Johnson</div>
+                        <div class="meta">
+                            <span>Submitted: Oct 12, 15:45</span>
+                            <span style="color: var(--accent); font-weight: 500;">Ungraded</span>
+                        </div>
+                    </div>
+
+                    <div class="submission-item">
+                        <div class="student-name"><span class="status-dot needs-grading"></span>Bob Williams</div>
+                        <div class="meta">
+                            <span style="color: var(--danger);">Late: Oct 13, 09:15</span>
+                            <span style="color: var(--accent); font-weight: 500;">Ungraded</span>
+                        </div>
+                    </div>
+
+                    <div class="submission-item" style="opacity: 0.7;">
+                        <div class="student-name"><span class="status-dot graded"></span>Sarah Connor</div>
+                        <div class="meta">
+                            <span>Submitted: Oct 11, 20:10</span>
+                            <span style="color: var(--success); font-weight: 500;">95 / 100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center: Document Viewer -->
+                <div class="grading-panel">
+                    <div class="flex justify-between items-center" style="padding: 0.5rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border);">
+                        <span style="font-weight: 500;">JohnSmith_Midterm.pdf</span>
+                        <div class="flex gap-2">
+                            <button class="icon-btn tooltip" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+                            <button class="icon-btn tooltip" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+                            <button class="icon-btn tooltip" title="Download Original"><i class="ph ph-download-simple"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="document-viewer">
+                        <div class="document-mock">
+                            <h2>CS301 Midterm Exam</h2>
+                            <p><strong>Name:</strong> John Smith</p>
+                            <hr style="margin: 1rem 0; border: none; border-top: 1px solid #ccc;">
+                            
+                            <h4>Question 1: Explain the difference between an Array and a Linked List regarding time complexity of insertions.</h4>
+                            <p>An array requires shifting elements when inserting in the middle or beginning, resulting in O(N) time complexity. However, inserting at the end is O(1) amortized if there is space.</p>
+                            <p>A linked list allows O(1) insertions anywhere IF you already have a reference to the node you are inserting after. However, finding that spot is O(N).</p>
+                            
+                            <br>
+                            <h4>Question 2: Write a method to reverse a singly linked list.</h4>
+                            <pre><code>
+public Node reverse(Node head) {
+    Node prev = null;
+    Node current = head;
+    Node next = null;
+    while (current != null) {
+        next = current.next;
+        current.next = prev;
+        prev = current;
+        current = next;
+    }
+    return prev;
+}
+                            </code></pre>
+                            
+                            <!-- Mock annotations -->
+                            <div style="position: absolute; top: 350px; right: 20%; background: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--success); padding: 0.5rem; font-family: sans-serif; font-size: 0.875rem; color: #333; max-width: 200px;">
+                                <strong>Instructor Comment:</strong>
+                                Good, accurate explanation.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Grading Tools -->
+                <div class="grading-sidebar">
+                    <div class="grading-sidebar-header">
+                        <div style="width: 4rem; height: 4rem; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 600; margin: 0 auto 0.5rem auto;">JS</div>
+                        <h3 style="margin: 0;">John Smith</h3>
+                        <p class="text-sm text-muted" style="margin: 0;">Student ID: 1048291</p>
+                    </div>
+
+                    <div class="grading-form">
+                        <label class="form-label" style="font-weight: 600; margin-bottom: 1rem;">Grade (Score)</label>
+                        <div class="grade-input-group">
+                            <input type="number" class="form-input" placeholder="0" value="92" style="border-color: var(--success); background: rgba(16, 185, 129, 0.05); color: var(--success);">
+                            <span>/ 100</span>
+                        </div>
+
+                        <label class="form-label" style="font-weight: 600;">Overall Feedback</label>
+                        <textarea class="feedback-box" placeholder="Leave comments for the student...">Excellent work on the dynamic programming section. Be sure to review tree traversals; you lost a few points on order notation there.</textarea>
+
+                        <button class="btn btn-primary w-full mb-4" onclick="showToast('Grade submitted! Moving to next student.')">Save and Next</button>
+                        
+                        <div class="flex gap-2">
+                            <button class="btn btn-secondary w-full text-sm">Save Draft</button>
+                            <button class="btn btn-secondary w-full text-sm" style="color: var(--danger); border-color: var(--danger);">Return for Revision</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

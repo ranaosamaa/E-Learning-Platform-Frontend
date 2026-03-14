@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Catalog - Edutopia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background-color: var(--surface);
+            color: var(--text-main);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="mainNav">
+            <div class="sidebar-header">
+                <i class="ph-fill ph-graduation-cap"></i>
+                <h2>Edutopia</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="student-dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i>
+                    Dashboard
+                </a>
+                <a href="courses-catalog.html" class="nav-item active">
+                    <i class="ph ph-books"></i>
+                    My Courses
+                </a>
+                <a href="assignments.html" class="nav-item">
+                    <i class="ph ph-clipboard-text"></i>
+                    Assignments
+                </a>
+                <a href="grades.html" class="nav-item">
+                    <i class="ph ph-chart-line-up"></i>
+                    Grades & Reports
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">JS</div>
+                    <div>
+                        <p style="font-weight: 500; font-size: 0.875rem;">John Smith</p>
+                        <p class="text-muted text-sm">Computer Science</p>
+                    </div>
+                </div>
+                <a href="index.html" class="nav-item mt-4" style="color: var(--danger); padding: 0.5rem 0;">
+                    <i class="ph ph-sign-out"></i>
+                    Log out
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-wrapper">
+            <!-- Top Header -->
+            <header class="top-header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="ph ph-list"></i>
+                </button>
+                <div class="search-bar" style="margin-left: 1rem;">
+                    <i class="ph ph-magnifying-glass text-muted"></i>
+                    <input type="text" placeholder="Search for new courses...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="icon-btn" aria-label="Notifications">
+                        <i class="ph ph-bell"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="main-content animate-fade-in">
+                <div class="page-title">
+                    <h1>Course Catalog</h1>
+                    <p>Discover and enroll in new courses for the upcoming semester.</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <select class="filter-select">
+                        <option value="">All Departments</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="math">Mathematics</option>
+                        <option value="eng">Engineering</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Difficulty Level</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+
+                <!-- Course Grid -->
+                <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <!-- Enrolled Course Example -->
+                    <div class="card course-card">
+                        <div class="course-image">
+                            <span class="course-badge">CS301</span>
+                        </div>
+                        <div class="course-content">
+                            <h3>Data Structures & Algorithms</h3>
+                            <p>Prof. Alan Turing</p>
+                            <div class="course-meta">
+                                <span><i class="ph ph-users"></i> 120 Students</span>
+                                <span><i class="ph ph-star"></i> 4.8</span>
+                            </div>
+                            <button class="btn w-full mt-4" style="background-color: var(--background); color: var(--text-muted); cursor: default;" disabled>Already Enrolled</button>
+                        </div>
+                    </div>
+
+                    <!-- Available Course Example 1 -->
+                    <div class="card course-card">
+                        <div class="course-image" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                            <span class="course-badge" style="color: #D97706;">MATH201</span>
+                        </div>
+                        <div class="course-content">
+                            <h3>Linear Algebra</h3>
+                            <p>Prof. Emmy Noether</p>
+                            <div class="course-meta">
+                                <span><i class="ph ph-users"></i> 85 Students</span>
+                                <span><i class="ph ph-star"></i> 4.5</span>
+                            </div>
+                            <button class="btn btn-primary w-full mt-4" onclick="showToast('Successfully enrolled in Linear Algebra!')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Available Course Example 2 -->
+                    <div class="card course-card">
+                        <div class="course-image" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">
+                            <span class="course-badge" style="color: #B91C1C;">ENG405</span>
+                        </div>
+                        <div class="course-content">
+                            <h3>Machine Learning Fundamentals</h3>
+                            <p>Prof. Geoffrey Hinton</p>
+                            <div class="course-meta">
+                                <span><i class="ph ph-users"></i> 200 Students</span>
+                                <span><i class="ph ph-star"></i> 4.9</span>
+                            </div>
+                            <button class="btn btn-primary w-full mt-4" onclick="showToast('Successfully enrolled in Machine Learning Fundamentals!')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                     <!-- Available Course Example 3 -->
+                     <div class="card course-card">
+                        <div class="course-image" style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);">
+                            <span class="course-badge" style="color: #6D28D9;">CS412</span>
+                        </div>
+                        <div class="course-content">
+                            <h3>Operating Systems</h3>
+                            <p>Prof. Linus Torvalds</p>
+                            <div class="course-meta">
+                                <span><i class="ph ph-users"></i> 150 Students</span>
+                                <span><i class="ph ph-star"></i> 4.7</span>
+                            </div>
+                            <button class="btn btn-primary w-full mt-4" onclick="showToast('Successfully enrolled in Operating Systems!')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Detail - Edutopia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .course-header-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-header-banner h1 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .module-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            overflow: hidden;
+        }
+
+        .module-header {
+            padding: 1rem 1.5rem;
+            background: var(--surface-hover);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .module-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .material-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            transition: background-color var(--transition-fast);
+        }
+
+        .material-item:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .material-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .material-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar" id="mainNav">
+             <div class="sidebar-header">
+                <i class="ph-fill ph-graduation-cap"></i>
+                <h2>Edutopia</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="student-dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i>
+                    Dashboard
+                </a>
+                <a href="courses-catalog.html" class="nav-item active">
+                    <i class="ph ph-books"></i>
+                    My Courses
+                </a>
+                <a href="assignments.html" class="nav-item">
+                    <i class="ph ph-clipboard-text"></i>
+                    Assignments
+                </a>
+                <a href="grades.html" class="nav-item">
+                    <i class="ph ph-chart-line-up"></i>
+                    Grades & Reports
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">JS</div>
+                    <div>
+                        <p style="font-weight: 500; font-size: 0.875rem;">John Smith</p>
+                        <p class="text-muted text-sm">Computer Science</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-wrapper">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="flex items-center gap-4">
+                    <a href="student-dashboard.html" class="icon-btn"><i class="ph ph-arrow-left"></i></a>
+                    <span style="font-weight: 500; color: var(--text-muted);">Back to Dashboard</span>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" aria-label="Notifications"><i class="ph ph-bell"></i></button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="main-content animate-fade-in">
+                
+                <div class="course-header-banner shadow-md">
+                    <h1>Data Structures & Algorithms</h1>
+                    <p style="opacity: 0.9;">CS301 • Prof. Alan Turing • Spring 2026</p>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button class="btn" style="background: rgba(255,255,255,0.2); color: white;">View Syllabus</button>
+                        <button class="btn" style="background: white; color: var(--primary);">Join Live Lecture</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid" style="grid-template-columns: 3fr 1fr;">
+                    
+                    <!-- Course Modules -->
+                    <section>
+                        <h2 class="mb-4">Course Content</h2>
+                        <div class="module-list">
+                            
+                            <!-- Module 1 -->
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <span>Module 1: Introduction & Complexity</span>
+                                    <i class="ph ph-caret-down"></i>
+                                </div>
+                                <div class="module-content">
+                                    <div class="material-item">
+                                        <div class="material-info">
+                                            <i class="ph-fill ph-video-camera material-icon"></i>
+                                            <div>
+                                                <p style="font-weight: 500; margin: 0;">Lecture 1 Recording: Big-O Notation</p>
+                                                <p class="text-sm text-muted" style="margin: 0;">45 mins</p>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn btn-secondary text-sm">Watch</a>
+                                    </div>
+                                    <div class="material-item">
+                                        <div class="material-info">
+                                            <i class="ph-fill ph-file-pdf material-icon text-danger"></i>
+                                            <div>
+                                                <p style="font-weight: 500; margin: 0;">Lecture 1 Slides</p>
+                                                <p class="text-sm text-muted" style="margin: 0;">PDF • 2.4 MB</p>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn btn-secondary text-sm">Download</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Module 2 -->
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <span>Module 2: Linear Data Structures</span>
+                                    <i class="ph ph-caret-down"></i>
+                                </div>
+                                <div class="module-content">
+                                    <div class="material-item">
+                                        <div class="material-info">
+                                            <i class="ph-fill ph-file-pdf material-icon text-danger"></i>
+                                            <div>
+                                                <p style="font-weight: 500; margin: 0;">Reading: Arrays vs Linked Lists</p>
+                                                <p class="text-sm text-muted" style="margin: 0;">PDF • 1.1 MB</p>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn btn-secondary text-sm">Download</a>
+                                    </div>
+                                    <div class="material-item" style="border-left: 3px solid var(--accent); background: rgba(245, 158, 11, 0.05);">
+                                        <div class="material-info">
+                                            <i class="ph-fill ph-clipboard-text material-icon amber" style="color: var(--accent);"></i>
+                                            <div>
+                                                <p style="font-weight: 500; margin: 0; color: var(--accent);">Assignment 1: Linked List Implementation</p>
+                                                <p class="text-sm text-muted" style="margin: 0;">Due: Next Friday</p>
+                                            </div>
+                                        </div>
+                                        <a href="assignments.html" class="btn text-sm" style="background: var(--accent); color: white;">Submit</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- Sidebar Info -->
+                    <section>
+                        <div class="card mb-4" style="padding: 1.5rem;">
+                            <h3 class="mb-4" style="font-size: 1.125rem;">Announcements</h3>
+                            <div class="item-list" style="gap: 1rem;">
+                                <div style="border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                                    <p class="text-sm" style="font-weight: 500;">Midterm Date Changed</p>
+                                    <p class="text-sm text-muted mb-2">The midterm exam has been moved to Oct 15th...</p>
+                                    <p class="text-xs text-muted">2 days ago</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm" style="font-weight: 500;">Welcome to CS301!</p>
+                                    <p class="text-sm text-muted mb-2">Please read the syllabus carefully before...</p>
+                                    <p class="text-xs text-muted">1 week ago</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: 1.5rem;">
+                            <h3 class="mb-4" style="font-size: 1.125rem;">Your Progress</h3>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Completed Modules</span>
+                                <span>1/6</span>
+                            </div>
+                            <div class="progress-bar-container mb-4">
+                                <div class="progress-bar" style="width: 16%;"></div>
+                            </div>
+                            <p class="text-sm text-muted">You are on track to complete the course on time.</p>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
